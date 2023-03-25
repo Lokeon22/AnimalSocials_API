@@ -1,18 +1,24 @@
 const knex = require("../database/knex");
+const { DiskStorage } = require("../providers/DiskStorage");
 
 class PostsController {
   async create(req, res) {
-    const { title, description, image } = req.body;
+    const { title, description } = req.body;
+    const image = req.file.filename;
     const id = req.user.id;
 
-    if (!title || !description) {
+    const diskStorage = new DiskStorage();
+
+    if (!title || !description || !image) {
       return res.json({ message: "Preencha todos os campos" });
     }
+
+    const filename = await diskStorage.saveFile(image);
 
     await knex("posts").insert({
       title,
       description,
-      image,
+      image: filename,
       user_id: id,
     });
 
@@ -63,9 +69,13 @@ class PostsController {
     const { id } = req.params;
     const user_id = req.user.id;
 
+    const diskStorage = new DiskStorage();
+
     const user = await knex("users").where({ id: user_id }).first();
 
     const post = await knex("posts").where({ id }).first();
+
+    await diskStorage.deleteFile(post.image);
 
     if (user.id !== post.user_id) {
       return res.json({ message: "Não possui permissão" });
