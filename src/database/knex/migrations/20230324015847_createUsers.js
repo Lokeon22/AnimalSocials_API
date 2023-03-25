@@ -1,6 +1,10 @@
+require("dotenv").config();
+const { hash } = require("bcrypt");
 const tableName = "users";
 
 exports.up = async function (knex) {
+  const adminPass = process.env.ADMIN_PASS;
+  const hashPass = await hash(adminPass, 8);
   const exists = await knex.schema.hasTable(tableName);
   if (!exists) {
     await knex.schema.createTable(tableName, (table) => {
@@ -16,8 +20,8 @@ exports.up = async function (knex) {
     return await knex(tableName).insert({
       id: "1",
       name: "admin",
-      email: "admin@admin.com",
-      password: "123",
+      email: process.env.ADMIN_EMAIL,
+      password: hashPass,
       is_admin: true,
     });
   }
