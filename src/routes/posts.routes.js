@@ -17,7 +17,8 @@ postsRouter.patch(
   postsController.create
 );
 postsRouter.get("/posts", postsController.index);
-postsRouter.get("/post/:id", postsController.show);
+postsRouter.get("/post/:user_id", postsController.show);
+postsRouter.get("/post/modal/:id", postsController.modal);
 postsRouter.delete("/remove/:id", ensureAuth, postsController.delete);
 
 module.exports = postsRouter;

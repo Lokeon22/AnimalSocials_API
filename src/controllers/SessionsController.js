@@ -12,13 +12,14 @@ class SessionsController {
     const user = await knex("users").where({ email }).first();
 
     if (!user) {
-      return res.json({ message: "Email e/ou senha incorreta" });
+      throw Error("Email e/ou senha incorreta");
     }
 
     const passVerify = await compare(password, user.password);
 
     if (!passVerify) {
-      return res.json({ message: "Email e/ou senha incorreta" });
+      //return res.status(401).json({ message: "Email e/ou senha incorreta" });
+      throw Error("Email e/ou senha incorreta");
     }
 
     const { secret, expiresIn } = authConfigs.jwt;

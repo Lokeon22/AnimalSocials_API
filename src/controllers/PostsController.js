@@ -45,6 +45,27 @@ class PostsController {
   }
 
   async show(req, res) {
+    const { user_id } = req.params;
+
+    const onePost = await knex("posts").where({ user_id });
+
+    const comments = await knex("comments");
+
+    const specificPost = onePost.map((post) => {
+      const allCommentsPost = comments.filter(
+        (comment) => comment.post_id === post.id
+      );
+
+      return {
+        ...post,
+        comments: allCommentsPost,
+      };
+    });
+
+    res.json(specificPost);
+  }
+
+  async modal(req, res) {
     const { id } = req.params;
 
     const onePost = await knex("posts").where({ id });

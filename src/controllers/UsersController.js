@@ -13,7 +13,7 @@ class UsersController {
     const verifyEmailExists = await knex("users").where({ email }).first();
 
     if (verifyEmailExists) {
-      return res.json({ message: "Email já cadastrado" });
+      throw Error("Email já existe");
     }
 
     const hashPass = await hash(password, 8);
@@ -46,7 +46,7 @@ class UsersController {
     const verifyPass = await compare(old_password, user.password);
 
     if (!verifyPass) {
-      return res.json({ message: "Email e/ou senha incorreta" });
+      throw Error("Email e/ou senha incorreta");
     }
 
     const hashPass = await hash(password, 8);
@@ -65,7 +65,7 @@ class UsersController {
   async show(req, res) {
     const { id } = req.params;
 
-    const user = await knex("users").where({ id });
+    const user = await knex("users").where({ id }).first();
 
     return res.json(user);
   }

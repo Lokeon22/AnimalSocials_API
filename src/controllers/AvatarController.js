@@ -24,7 +24,7 @@ class AvatarController {
       avatar: filename,
     });
 
-    return res.json({ message: "Foto atualizada" });
+    return res.json(avatarFile);
   }
 }
 
