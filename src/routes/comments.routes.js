@@ -7,7 +7,7 @@ const commentsRouter = Router();
 
 const commentsController = new CommentsController();
 
-commentsRouter.post("/comment", ensureAuth, commentsController.create);
+commentsRouter.post("/comment/:post_id", ensureAuth, commentsController.create);
 commentsRouter.get("/comments", commentsController.show);
 
 module.exports = commentsRouter;

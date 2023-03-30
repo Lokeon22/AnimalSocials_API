@@ -2,7 +2,7 @@ const knex = require("../database/knex");
 
 class CommentsController {
   async create(req, res) {
-    const { post_id } = req.query;
+    const { post_id } = req.params;
     const { comment } = req.body;
     const user_id = req.user.id;
 
