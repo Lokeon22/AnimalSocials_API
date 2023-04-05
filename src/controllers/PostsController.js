@@ -26,7 +26,22 @@ class PostsController {
   }
 
   async index(req, res) {
-    const posts = await knex("posts");
+    let { limit, page } = req.query;
+
+    limit = Number(limit);
+    page = Number(page);
+
+    if (!limit) {
+      limit = 6;
+    }
+
+    if (!page) {
+      page = 1;
+    }
+
+    const posts = await knex("posts")
+      .limit(limit)
+      .offset((page - 1) * limit);
 
     const comments = await knex("comments");
 
