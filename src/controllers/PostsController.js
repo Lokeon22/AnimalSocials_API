@@ -121,6 +121,27 @@ class PostsController {
 
     return res.json({ message: "Post deletado com sucesso" });
   }
+
+  async adminDelete(req, res) {
+    const { id } = req.params; //post_id
+    const user_id = req.user.id;
+
+    const diskStorage = new DiskStorage();
+
+    const user = await knex("users").where({ id: user_id }).first();
+
+    if (user.is_admin === 0) {
+      throw Error("Usuario sem permissão");
+    }
+
+    const post = await knex("posts").where({ id }).first();
+
+    await diskStorage.deleteFile(post.image);
+
+    await knex("posts").where({ id }).del();
+
+    return res.json({ message: "Post deletado com sucesso" });
+  }
 }
 
 module.exports = { PostsController };
