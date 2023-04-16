@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { default: axios } = require("axios");
+const axios = require("axios");
 const knex = require("../database/knex");
 
 class ChatController {
