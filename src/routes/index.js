@@ -4,7 +4,6 @@ const usersRoutes = require("./users.routes");
 const sessionsRoutes = require("./sessions.routes");
 const postsRoutes = require("./posts.routes");
 const commentsRoutes = require("./comments.routes");
-const chatRoutes = require("./chat.routes");
 
 const routes = Router();
 
@@ -12,6 +11,5 @@ routes.use("/", usersRoutes);
 routes.use("/", sessionsRoutes);
 routes.use("/", postsRoutes);
 routes.use("/", commentsRoutes);
-routes.use("/", chatRoutes);
 
 module.exports = routes;
